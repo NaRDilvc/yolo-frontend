@@ -6,7 +6,7 @@ const UploadCard = () => {
   const [loading, setLoading] = useState(false);
 
   // Change this to switch between dev/prod dynamically if needed
-  const API_URL = "http://yolo-classifier-app.eastus.azurecontainer.io/classify/";
+  const API_URL = "https://yolo-api-free.azurewebsites.net/classify/";
 
   const handleChange = (e) => setFile(e.target.files[0]);
 
