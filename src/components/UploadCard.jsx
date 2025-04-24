@@ -5,6 +5,9 @@ const UploadCard = () => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // Change this to switch between dev/prod dynamically if needed
+  const API_URL = "http://yolo-classifier-app.eastus.azurecontainer.io/classify/";
+
   const handleChange = (e) => setFile(e.target.files[0]);
 
   const handleSubmit = async (e) => {
@@ -16,15 +19,16 @@ const UploadCard = () => {
 
     setLoading(true);
     try {
-      const response = await fetch("http://yolo-classifier-app.eastus.azurecontainer.io/classify/", {
+      const response = await fetch(API_URL, {
         method: "POST",
         body: formData,
       });
+
       const data = await response.json();
       setResult(data);
     } catch (err) {
-      console.error("Upload failed:", err);
-      setResult({ error: "Upload failed." });
+      console.error("❌ Upload failed:", err);
+      setResult({ error: "Upload failed. Please try again." });
     } finally {
       setLoading(false);
     }
@@ -33,11 +37,17 @@ const UploadCard = () => {
   return (
     <div className="upload-card">
       <form onSubmit={handleSubmit}>
-        <input type="file" accept="image/*" onChange={handleChange} />
-        <button type="submit" disabled={loading}>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleChange}
+          className="file-input"
+        />
+        <button type="submit" disabled={loading} className="upload-btn">
           {loading ? "Classifying..." : "Upload & Classify"}
         </button>
       </form>
+
       {result && (
         <div className="result-card">
           <h3>Prediction Result:</h3>
